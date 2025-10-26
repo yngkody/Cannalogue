@@ -4,204 +4,186 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cannalogue — AI Cannabis Journal & Personal Recommender</title>
-  <meta name="description" content="Cannalogue is an AI-powered cannabis journaling app that helps users track effects, terpenes, and dosage, then recommends strains and products that fit their goals."/>
+  <meta name="description" content="Cannalogue is an AI-powered cannabis journaling app that turns your experiences into personalized strain and product recommendations."/>
   <style>
     :root{
-      --ink:#0d1b16; --dim:#4a5a51; --bg:#f6f8f6; --panel:#ffffff; --accent:#0a6b4a; --accent-2:#b7952f; --line:#e6ece8; --shadow:0 10px 30px rgba(12,44,33,.08); --radius:18px; --padX:clamp(14px,3.5vw,28px); --padY:clamp(10px,2.2vw,18px); --max:1100px; --max-wide:1240px;
-    }
-    @media (prefers-color-scheme: dark){
-      :root{
-        --bg:#0f1110; --panel:#1a1c1a; --ink:#f6f8f6; --dim:#a9b3a9; --line:#303630; --shadow:0 10px 30px rgba(0,0,0,.6);
-      }
+      --ink:#111111; --dim:#404040; --bg:#ffffff; --panel:#ffffff; --line:#e6e6e6; --accent:#0a6b4a;
+      --radius:16px; --shadow:0 6px 18px rgba(0,0,0,.04); --max:1120px;
     }
     *{box-sizing:border-box}
-    body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
-    a{color:var(--accent);text-decoration:none}
-    section{padding:clamp(28px,7vw,64px) 0;}
-    .wrap{max-width:var(--max);margin:0 auto;padding:0 var(--padX)}
-    h1,h2,h3{margin:0 0 10px;line-height:1.15}
-    h1{font-size:clamp(30px,6vw,54px);letter-spacing:-.02em}
-    h2{font-size:clamp(22px,3.8vw,34px)}
-    h3{font-size:clamp(18px,2.6vw,22px);color:var(--dim)}
-    p{margin:8px 0 0;color:var(--ink)}
-    .kicker{color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:12px}
-    .hero-grid{display:grid;gap:20px;grid-template-columns:1fr;align-items:center}
-    @media(min-width:900px){.hero-grid{grid-template-columns:1.15fr .85fr}}
-    .hero-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(12px,2.5vw,18px)}
-    .pitch{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
-    .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink)}
-    @media (prefers-color-scheme: dark){.pill{background:#1f221f;border-color:#303630;color:var(--ink)}}
-    .grid{display:grid;gap:18px}
+    body{margin:0; background:var(--bg); color:var(--ink); font:16.5px/1.6 system-ui,-apple-system,Segoe UI,Inter,Roboto,Helvetica,Arial,sans-serif}
+    a{color:var(--accent); text-decoration:none}
+    h1,h2,h3{margin:0 0 10px; line-height:1.18; color:var(--ink)}
+    h1{font-size:clamp(32px,6.2vw,56px); font-weight:800}
+    h2{font-size:clamp(22px,3.8vw,36px); font-weight:700}
+    h3{font-size:clamp(18px,2.8vw,22px); font-weight:600; color:var(--dim)}
+    p{margin:8px 0}
+    section{padding:clamp(28px,6vw,64px) 0}
+    .wrap{max-width:var(--max); margin:0 auto; padding:0 20px}
+
+    /* Layout helpers */
+    .grid{display:grid; gap:16px}
     .cols-2{grid-template-columns:1fr}
-    @media(min-width:900px){.cols-2{grid-template-columns:1fr 1fr}}
-    .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(12px,2vw,18px)}
-    .list-check{list-style:none;padding:0;margin:0}
-    .list-check li{padding-left:26px;position:relative;margin:10px 0}
-    .list-check li:before{content:"";position:absolute;left:0;top:3px;width:18px;height:18px;border-radius:50%;border:2px solid #18a06d}
-    .device{background:var(--panel);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);padding:10px;display:grid;place-items:center;aspect-ratio:9/18;max-width:360px;margin-left:auto;}
-    .screen{width:100%;height:100%;border-radius:22px;background:linear-gradient(180deg,#f9fbfa,#edf4f0);display:grid;align-content:start;gap:8px;padding:12px}
-    @media (prefers-color-scheme: dark){.screen{background:linear-gradient(180deg,#1a1c1a,#0f1110)}}
-    .tabbar{display:flex;gap:6px;background:#f3f7f5;border:1px solid var(--line);border-radius:12px;padding:6px}
-    @media (prefers-color-scheme: dark){.tabbar{background:#222625;border-color:#303630}}
-    .tab{flex:1;text-align:center;font-size:12px;padding:6px 8px;border-radius:999px;color:var(--dim);background:transparent}
-    .tab.active{background:#fff;color:var(--ink);border:1px solid var(--line)}
-    @media (prefers-color-scheme: dark){.tab.active{background:#1f221f;border-color:#303630}}
-    .card-list{display:grid;gap:8px}
-    .mini-card{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px}
-    @media (prefers-color-scheme: dark){.mini-card{background:#1f221f;border-color:#303630}}
-    .thumb{width:44px;height:44px;border-radius:10px;background:radial-gradient(circle at 30% 30%,#d7efe5,#bfe3d3)}
-    .stars{font-size:12px;color:#f2b01e}
-    .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
-    .tags .chip{font-size:10px}
-    .chip{display:inline-flex;align-items:center;padding:4px 8px;border:1px solid var(--line);border-radius:999px;font-size:11px;color:var(--dim)}
-    .stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
-    @media (prefers-color-scheme: dark){.stat{background:#1f221f;border-color:#303630}}
-    #cta .card{transition:background 0.5s ease}
-    @media (prefers-color-scheme: dark){#cta .card{background:linear-gradient(90deg,#158e61,#0a6b4a);}}
+    @media (min-width:900px){ .cols-2{grid-template-columns:1.05fr .95fr} }
+    .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:18px}
+    .row{display:grid; gap:16px}
+    @media (min-width:900px){ .row{grid-template-columns:1.1fr .9fr} }
+
+    /* Hero */
+    .hero-grid{display:grid; gap:20px; grid-template-columns:1fr}
+    @media (min-width:900px){ .hero-grid{grid-template-columns:1.2fr .8fr} }
+    .headline{background:#fff; border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px}
+    .headline h1 span{color:#0a6b4a}
+    .badge{display:inline-block; padding:6px 10px; border:1px solid var(--line); border-radius:999px; font-size:12px; background:#fff; color:var(--ink); margin:4px 6px 0 0}
+
+    /* Media blocks (real images, no SVGs) */
+    .media{width:100%; border-radius:14px; border:1px solid var(--line); box-shadow:var(--shadow); display:block; object-fit:cover; background:#fafafa}
+    .media.square{aspect-ratio:1/1; object-position:center}
+    .media.tall{aspect-ratio:4/3; object-position:center}
+    .media.phone{aspect-ratio:9/18; max-width:360px; justify-self:end; object-position:top center}
+    .media.tall{aspect-ratio:4/3}
+    .media.phone{aspect-ratio:9/18; max-width:360px; justify-self:end}
+
+    /* List */
+    .list{margin:8px 0 0; padding-left:18px}
+
+    /* CTA */
+    .cta{display:flex; gap:10px; flex-wrap:wrap}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:999px; border:1px solid var(--line); background:#fff; color:var(--ink); font-weight:600}
+    .btn.primary{background:#0a6b4a; color:#fff; border-color:#0a6b4a}
+
+    footer{padding:26px 0; border-top:1px solid var(--line); color:#555}
   </style>
 </head>
 <body>
-<section id="top" class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="kicker">Cannalogue</div>
-      <h1>Track. Learn. Feel Better.</h1>
-      <h3>An AI-powered cannabis journal that turns your experiences into personalized product and strain recommendations.</h3>
-      <div class="pitch">
-        <div class="pill">AI Wellness Companion</div>
-        <div class="pill">Personal Cannabis Journal</div>
-        <div class="pill">Smart Recommendations</div>
-        <div class="pill">Private & Secure</div>
+
+  <!-- ================= HERO (no glow, brighter, black text) ================= -->
+  <section id="top" class="hero">
+    <div class="wrap hero-grid">
+      <div class="headline">
+        <h1>The world’s first AI that learns <span>your body</span> through cannabis.</h1>
+        <h3>Track mood, dose, terpenes, and timing. Cannalogue turns your entries into ultra‑personal recommendations for sleep, focus, and relief.</h3>
+        <div style="margin-top:10px">
+          <span class="badge">AI Wellness</span>
+          <span class="badge">Private by Default</span>
+          <span class="badge">Personal Recs</span>
+        </div>
+        <p style="margin-top:12px; font-size:14px">Built by <b>Kody Young</b> • <a href="mailto:bgenius@transverbapp.com">bgenius@transverbapp.com</a> • New York City</p>
+        <div class="cta" style="margin-top:12px">
+          <a class="btn primary" href="#cta">Invest / Early Access</a>
+          <a class="btn" href="#demo">See the Demo</a>
+        </div>
       </div>
+      <!-- Replace with a real app screen when ready -->
+      <img class="media phone" alt="Cannalogue app preview" src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=900&auto=format&fit=crop"/>
     </div>
-    <div class="hero-card device">
-      <div class="screen">
-        <div class="tabbar"><div class="tab active">Discover</div><div class="tab">Journal</div><div class="tab">You</div></div>
-        <div class="card-list">
-          <div class="mini-card"><div class="thumb"></div><div><b>Blue Dream (Hybrid)</b><div class="stars">★★★★★</div><div class="tags"><span class="chip">Calm</span><span class="chip">Creative</span><span class="chip">Myrcene</span></div></div></div>
-          <div class="mini-card"><div class="thumb"></div><div><b>Pine Walker (Sativa)</b><div class="stars">★★★★☆</div><div class="tags"><span class="chip">Focus</span><span class="chip">Pinene</span><span class="chip">Limonene</span></div></div></div>
-          <div class="mini-card"><div class="thumb"></div><div><b>Lavender Night (Indica)</b><div class="stars">★★★★★</div><div class="tags"><span class="chip">Sleep</span><span class="chip">Linalool</span><span class="chip">Low THC</span></div></div></div>
+  </section>
+
+  <!-- ================= PROBLEM ================= -->
+  <section id="problem">
+    <div class="wrap row">
+      <div class="card">
+        <h2>Problem — Wellness is personal; cannabis data isn’t.</h2>
+        <p>Most consumers don’t track what they used, how much, or how it felt. Cannalogue closes the gap between consumption and insight.</p>
+        <ul class="list">
+          <li>Inconsistent experiences from trial and error</li>
+          <li>Education gaps on terpenes & minor cannabinoids</li>
+          <li>No loop between journaling → insight → action</li>
+        </ul>
+      </div>
+      <img class="media tall" alt="Modern NYC workspace with notebook and plant" src="https://stock.adobe.com/images/doctor-hand-hold-and-offer-to-patient-medical-marijuana-and-oil-cannabis-recipe-for-personal-use-legal-light-drugs-prescribe-alternative-remedy-or-medication-medicine-concept/231355746"/>
+    </div>
+  </section>
+    </div>
+  </section>
+
+  <!-- ================= SOLUTION ================= -->
+  <section id="solution">
+    <div class="wrap row">
+      <div class="card">
+        <h2>Solution — AI Cannabis Journal → Personal Recommender</h2>
+        <p>Log mood, goals, dose, terpenes, and timing. Cannalogue learns your patterns and suggests products tuned to your body.</p>
+        <ul class="list">
+          <li>Microdosing guidance and timing suggestions</li>
+          <li>Terpene/cannabinoid insights you can act on</li>
+          <li>Private by default with export controls</li>
+        </ul>
+      </div>
+      <img class="media tall" alt="Clean analytics dashboard on laptop" src="https://images.unsplash.com/photo-1551281044-8e8d28b2e6f1?q=80&w=1400&auto=format&fit=crop"/>
+    </div>
+  </section>
+    </div>
+  </section>
+
+  <!-- ================= MARKET ================= -->
+  <section id="market">
+    <div class="wrap row">
+      <div class="card">
+        <h2>Market — TAM / SAM / SOM</h2>
+        <p><b>$120B</b> TAM (Global Cannabis 2030) • <b>$18B</b> SAM (NA Wellness) • <b>$2.5B</b> SOM (Cannabis wellness apps, early)</p>
+        <p>High‑intent audience searching for personalized guidance; few AI‑first experiences in this niche.</p>
+      </div>
+      <img class="media tall" alt="Abstract financial chart in neutral tones" src="https://images.unsplash.com/photo-1543286386-2e659306cd6c?q=80&w=1400&auto=format&fit=crop"/>
+    </div>
+  </section>
+    </div>
+  </section>
+
+  <!-- ================= FUNDING ================= -->
+  <section id="funding">
+    <div class="wrap row">
+      <div class="card">
+        <h2>Funding — Pre‑seed $250,000</h2>
+        <ul class="list">
+          <li>40% Product Development</li>
+          <li>30% Marketing & Sales</li>
+          <li>10% Machine Learning R&D</li>
+          <li>10% Legal & Compliance</li>
+          <li>10% Infrastructure & Hosting</li>
+        </ul>
+        <p>Runway: 12–15 months • Milestones: 10k DAUs, $5k MRR</p>
+      </div>
+      <img class="media tall" alt="Founder in investor meeting setting" src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1400&auto=format&fit=crop"/>
+    </div>
+  </section>
+    </div>
+  </section>
+
+  <!-- ================= TEAM ================= -->
+  <section id="team">
+    <div class="wrap row">
+      <div class="card">
+        <h2>Team — Kody Young, Founder & CEO</h2>
+        <p>Creative technologist and product engineer building at the intersection of data, culture, and wellness.</p>
+        <p style="font-size:14px"><a href="mailto:bgenius@transverbapp.com">bgenius@transverbapp.com</a> • New York City</p>
+      </div>
+      <!-- Founder portrait: save the provided image as /assets/founder-kody.jpg in your project and update the src below -->
+      <img class="media square" alt="Kody Young — Founder & CEO" src="assets/founder-kody.jpg"/>
+    </div>
+  </section>
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section id="cta">
+    <div class="wrap grid">
+      <div class="card" style="display:grid; gap:10px; text-align:center">
+        <h2>Invest in Cannalogue</h2>
+        <p>Join us in redefining cannabis wellness with an AI that learns your body.</p>
+        <div class="cta" style="justify-content:center">
+          <a class="btn primary" href="#">Invest / Join Early Access</a>
+          <a class="btn" href="mailto:bgenius@transverbapp.com">Email: bgenius@transverbapp.com</a>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="problem">
-  <div class="wrap grid cols-2">
-    <div class="card">
-      <span class="kicker">Problem</span>
-      <h2>Wellness is personal — cannabis data isn’t.</h2>
-      <p>Most consumers don’t track what they used, how much, or how it felt. Cannalogue closes the gap between consumption and insight.</p>
-      <ul class="list-check">
-        <li>Inconsistent experiences from trial and error.</li>
-        <li>Lack of education on terpenes and cannabinoids.</li>
-        <li>No link between journaling, insights, and recommendations.</li>
-      </ul>
+  <footer>
+    <div class="wrap" style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap">
+      <div>© 2025 Cannalogue — AI Cannabis Journal</div>
+      <a href="mailto:bgenius@transverbapp.com">bgenius@transverbapp.com</a>
     </div>
-    <div class="card">
-      <span class="kicker">Evidence</span>
-      <h3>Growing need for personalized cannabis guidance</h3>
-      <div class="stat"><b>$120B</b><div class="chip">Global cannabis market 2030</div></div>
-      <div class="stat"><b>64%</b><div class="chip">Consumers seek personalized products</div></div>
-      <div class="stat"><b>+20%</b><div class="chip">Annual growth in cannabis wellness apps</div></div>
-    </div>
-  </div>
-</section>
-
-<section id="solution">
-  <div class="wrap grid cols-2">
-    <div class="card">
-      <span class="kicker">Solution</span>
-      <h2>AI Cannabis Journal → Personal Recommender</h2>
-      <p>Log mood, goals, dose, terpenes, and timing. Cannalogue learns your patterns and suggests products tuned to your body.</p>
-    </div>
-    <div class="card">
-      <span class="kicker">Architecture</span>
-      <ul class="list-check">
-        <li>Adaptive ML model to learn personal responses.</li>
-        <li>Local-first journaling with optional cloud sync.</li>
-        <li>Future integrations with dispensaries and wearables.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="market">
-  <div class="wrap grid cols-2">
-    <div class="card">
-      <span class="kicker">Market</span>
-      <h2>TAM / SAM / SOM</h2>
-      <div class="stat"><b>$120B</b><div class="chip">TAM – Global Cannabis Market 2030</div></div>
-      <div class="stat"><b>$18B</b><div class="chip">SAM – North American Wellness Segment</div></div>
-      <div class="stat"><b>$2.5B</b><div class="chip">SOM – Early adopters using cannabis wellness apps</div></div>
-    </div>
-    <div class="card">
-      <span class="kicker">Opportunity</span>
-      <h3>First-mover advantage in AI cannabis journaling</h3>
-      <ul class="list-check">
-        <li>High intent audience actively seeking personalized recommendations.</li>
-        <li>Low competition for AI-first experiences in this niche.</li>
-        <li>Scalable to partnerships with dispensaries and clinics.</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="funding">
-  <div class="wrap grid cols-2">
-    <div class="card">
-      <span class="kicker">Funding</span>
-      <h2>Pre-seed Raise — $250,000</h2>
-      <ul class="list-check">
-        <li>40% Product Development</li>
-        <li>30% Marketing & Sales</li>
-        <li>10% Machine Learning R&D</li>
-        <li>10% Legal & Compliance</li>
-        <li>10% Infrastructure & Hosting</li>
-      </ul>
-      <p>Cannalogue’s raise provides 12–15 months of runway, reaching milestones of 10,000 DAUs and $5K MRR.</p>
-    </div>
-    <div class="card">
-      <span class="kicker">Milestones</span>
-      <h3>2025–2026 Goals</h3>
-      <ul class="list-check">
-        <li>Q1: Launch beta and onboard first 1,000 users</li>
-        <li>Q2: Integrate dispensary and wearable APIs</li>
-        <li>Q3: Launch premium subscriptions and AI insights</li>
-        <li>Q4: Expand to Canada and Europe legal markets</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="team">
-  <div class="wrap grid cols-2">
-    <div class="card">
-      <span class="kicker">Team</span>
-      <h2>Kody Young — Founder & CEO</h2>
-      <p>Creative technologist, product engineer, and musician merging tech and culture to improve wellness and connection. Experienced in app design, full-stack development, and brand strategy.</p>
-    </div>
-    <div class="card">
-      <span class="kicker">Advisory & Partnerships</span>
-      <ul class="list-check">
-        <li>Medical cannabis clinician and data scientist advisors</li>
-        <li>Strategic partnerships with dispensaries and wellness brands</li>
-        <li>Legal advisors for compliance and expansion</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section id="cta">
-  <div class="wrap">
-    <div class="card" style="background:linear-gradient(90deg,#0a6b4a,#158e61);color:#fff;text-align:center;">
-      <h2 style="margin-bottom:10px;">Invest in Cannalogue</h2>
-      <p style="margin-bottom:20px;">Join us in redefining cannabis wellness through data, design, and personalization. Help shape the future of AI-driven cannabis guidance.</p>
-      <a href="#" style="display:inline-block;background:#fff;color:#0a6b4a;padding:10px 18px;border-radius:999px;font-weight:600;text-decoration:none;">Join Early Access / Invest Now</a>
-    </div>
-  </div>
-</section>
+  </footer>
 
 </body>
 </html>
